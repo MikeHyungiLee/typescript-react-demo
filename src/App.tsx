@@ -1,24 +1,46 @@
 import React,{Component} from 'react';
-import './App.css';
+import { Form, Input } from './input';
+import Number from './Number';
 
-class App extends Component {
+interface IState {
+  counter:number;
+  name:string;
+}
+
+class App extends Component<{}, IState> {
+  
+  state = {
+    counter: 0,
+    name:""
+  };
+  
+  add = () => {
+    this.setState(prev => {
+      return {
+        counter: prev.counter + 1
+      }
+    })
+  }
+
+  onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    console.log(event.target)
+  }
+  
+  onFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+  }
+
   render() {
+    const {counter, name} = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <>
+        <div>
+          <Form onFormSubmit={this.onFormSubmit}>
+            <Input value={name} onChange={this.onChange}/>
+          </Form>
+        </div>
+        <div><Number count={counter}/><button onClick={this.add}>Add</button></div>
+      </>
     );
   }
 }
